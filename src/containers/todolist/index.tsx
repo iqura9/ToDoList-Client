@@ -21,8 +21,12 @@ const ToDoListComponent = () => {
     setTodos((prev: IToDo[]) => [...prev, ToDo]);
   };
 
-  const onDeleteHandler = (id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.key !== id));
+  const onDeleteHandler = (id: string | string[]) => {
+    if (Array.isArray(id)) {
+      id.forEach((el) => onDeleteHandler(el));
+    } else {
+      setTodos((prev) => prev.filter((todo) => todo.key !== id));
+    }
   };
 
   return (

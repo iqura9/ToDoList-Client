@@ -3,7 +3,7 @@ import { ColumnsType } from "antd/es/table";
 import { IToDo } from "..";
 
 interface DataType {
-  key: React.Key;
+  key: string;
   name: string;
 }
 
