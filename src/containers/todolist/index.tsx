@@ -32,7 +32,11 @@ const ToDoListComponent = () => {
   return (
     <div className="todolist__wrapper">
       <CreateToDo setTodo={setTodo} />
-      <ToDoListTable data={todos} onDeleteHandler={onDeleteHandler} />
+      <ToDoListTable
+        data={todos}
+        setData={setTodos}
+        onDeleteHandler={onDeleteHandler}
+      />
     </div>
   );
 };
