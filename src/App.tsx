@@ -1,10 +1,15 @@
-import './App.css'
-import ToDoListComponent from './containers/todolist'
+import "./App.css";
+import ToDoRadioGroup from "./components/RadioGroup";
+import ToDoListComponent from "./containers/todolist";
+import { ToDoProvider } from "./context/ToDoContext";
 
 function App() {
-
-  return <ToDoListComponent/>
-  
+  return (
+    <ToDoProvider>
+      <ToDoRadioGroup />
+      <ToDoListComponent />
+    </ToDoProvider>
+  );
 }
 
-export default App
+export default App;
