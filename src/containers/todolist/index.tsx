@@ -1,9 +1,8 @@
-import React from "react";
 import "./styles.scss";
 import CreateToDo from "./CreateToDo";
-import useLocalStorage from "../../utils/useLocalStorage";
 import ToDoListTable from "./Table";
-import { v4 as uuidv4 } from "uuid";
+import { useData } from "../../hooks/useData";
+import { useToDoContext } from "../../context/ToDoContext";
 
 export interface IToDo {
   key: string;
@@ -11,23 +10,8 @@ export interface IToDo {
 }
 
 const ToDoListComponent = () => {
-  const [todos, setTodos] = useLocalStorage<IToDo[]>("todos", []);
-
-  const setTodo = (value: string) => {
-    const ToDo = {
-      key: uuidv4(),
-      value,
-    };
-    setTodos((prev: IToDo[]) => [...prev, ToDo]);
-  };
-
-  const onDeleteHandler = (id: string | string[]) => {
-    if (Array.isArray(id)) {
-      id.forEach((el) => onDeleteHandler(el));
-    } else {
-      setTodos((prev) => prev.filter((todo) => todo.key !== id));
-    }
-  };
+  const { selectedValue } = useToDoContext();
+  const { todos, setTodos, setTodo, onDeleteHandler } = useData(selectedValue);
 
   return (
     <div className="todolist__wrapper">

@@ -15,25 +15,27 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 const ToDoListTable: FC<Props> = ({ data, onDeleteHandler, setData }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    const stringKeys = newSelectedRowKeys.map((key) => String(key));
-    console.log("selectedRowKeys changed: ", stringKeys);
-    setSelectedRowKeys(stringKeys);
+  const onSelectChangeApi = (newSelectedRowKeys: string[]) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const onDeleteHandlerNew = (id: string | string[]) => {
+    onDeleteHandler(id);
+    setSelectedRowKeys([]);
   };
 
   const rowSelection = {
     selectedRowKeys,
-    onChange: onSelectChange,
+    onChange: onSelectChangeApi,
   };
 
-  const columns = columnsHandler(onDeleteHandler);
+  const columns = columnsHandler(onDeleteHandlerNew);
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       setData((previous: IToDo[]) => {
-        console.log(previous);
         const activeIndex = previous.findIndex((i) => i.key === active.id);
         const overIndex = previous.findIndex((i) => i.key === over?.id);
         return arrayMove(previous, activeIndex, overIndex);
