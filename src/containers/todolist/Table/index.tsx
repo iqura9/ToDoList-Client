@@ -1,5 +1,5 @@
 import { Button, Table } from "antd";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Row, columnsHandler, handleToDoData } from "./constants";
 import "./styles.scss";
 import { IToDo } from "..";

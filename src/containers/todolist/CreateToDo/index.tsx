@@ -1,5 +1,5 @@
 import { Button, Form, Input, Row, Space } from "antd";
-import React, { FC } from "react";
+import { FC } from "react";
 
 const CreateToDo: FC<Props> = ({ setTodo }) => {
   const [form] = Form.useForm();
