@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useLocalStorage from "../utils/useLocalStorage";
 import { IToDo } from "../containers/todolist";
 import { v4 as uuidv4 } from "uuid";
-import { createTodo, deleteTodo, getTodos } from "../api/api";
+import { createTodo, deleteTodo, getTodos, updateTodo } from "../api/api";
 
 export const useData = (selectedValue: string) => {
   const {
@@ -10,12 +10,14 @@ export const useData = (selectedValue: string) => {
     setTodos: setRestApiTodos,
     setTodo: setRestApiTodo,
     onDeleteHandler: onDeleteRestApiHandler,
+    onUpdate: onUpdateApiHandler,
   } = useRestApiData();
   const {
     todos: localStorageTodos,
     setTodos: setLocalStorageTodos,
     setTodo: setLocalStorageTodo,
     onDeleteHandler: onDeleteLocalStorageHandler,
+    onUpdate: onUpdateLocalStorageHandler,
   } = useLocalStorageData();
 
   const todos = selectedValue === "Rest API" ? restApiTodos : localStorageTodos;
@@ -28,11 +30,17 @@ export const useData = (selectedValue: string) => {
       ? onDeleteRestApiHandler
       : onDeleteLocalStorageHandler;
 
+  const onUpdate =
+    selectedValue === "Rest API"
+      ? onUpdateApiHandler
+      : onUpdateLocalStorageHandler;
+
   return {
     todos,
     setTodos,
     setTodo,
     onDeleteHandler,
+    onUpdate,
   };
 };
 
@@ -45,6 +53,14 @@ const useLocalStorageData = () => {
       value,
     };
     setTodos((prev: IToDo[]) => [...prev, ToDo]);
+  };
+
+  const onUpdate = (id: string, updatedValue: string) => {
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.key === id ? { ...todo, value: updatedValue } : todo
+      )
+    );
   };
 
   const onDeleteHandler = (id: string | string[]) => {
@@ -60,6 +76,7 @@ const useLocalStorageData = () => {
     setTodos,
     setTodo,
     onDeleteHandler,
+    onUpdate,
   };
 };
 
@@ -83,6 +100,18 @@ const useRestApiData = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const onUpdate = async (id: string, updatedValue: string) => {
+    try {
+      const updatedTodo = await updateTodo(id, { value: updatedValue });
+      const updatedTodos = todos.map((todo) =>
+        todo.key === id ? { ...todo, value: updatedTodo.value } : todo
+      );
+      setTodos(updatedTodos);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onDeleteHandler = (id: string | string[]) => {
@@ -110,5 +139,6 @@ const useRestApiData = () => {
     setTodos,
     setTodo,
     onDeleteHandler,
+    onUpdate,
   };
 };

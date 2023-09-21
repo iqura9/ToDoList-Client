@@ -12,7 +12,12 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
-const ToDoListTable: FC<Props> = ({ data, onDeleteHandler, setData }) => {
+const ToDoListTable: FC<Props> = ({
+  data,
+  onDeleteHandler,
+  setData,
+  onUpdate,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
   const onSelectChangeApi = (newSelectedRowKeys: string[]) => {
@@ -29,7 +34,7 @@ const ToDoListTable: FC<Props> = ({ data, onDeleteHandler, setData }) => {
     onChange: onSelectChangeApi,
   };
 
-  const columns = columnsHandler(onDeleteHandlerNew);
+  const columns = columnsHandler(onDeleteHandlerNew, onUpdate);
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
@@ -63,6 +68,8 @@ const ToDoListTable: FC<Props> = ({ data, onDeleteHandler, setData }) => {
           strategy={verticalListSortingStrategy}
         >
           <Table
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             rowSelection={rowSelection}
             columns={columns}
             dataSource={handleToDoData(data)}
@@ -85,6 +92,7 @@ type Props = {
   data: IToDo[];
   onDeleteHandler: (id: string | string[]) => void;
   setData: (data: IToDo[]) => void;
+  onUpdate: (id: string, updatedValue: string) => void;
 };
 
 export default ToDoListTable;
