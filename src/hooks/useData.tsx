@@ -1,48 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useLocalStorage from "../utils/useLocalStorage";
 import { IToDo } from "../containers/todolist";
 import { v4 as uuidv4 } from "uuid";
 import { createTodo, deleteTodo, getTodos, updateTodo } from "../api/api";
 
-// export const useData = (selectedValue: string) => {
-//   const {
-//     todos: restApiTodos,
-//     setTodos: setRestApiTodos,
-//     setTodo: setRestApiTodo,
-//     onDeleteHandler: onDeleteRestApiHandler,
-//     onUpdate: onUpdateApiHandler,
-//   } = useRestApiData();
-//   const {
-//     todos: localStorageTodos,
-//     setTodos: setLocalStorageTodos,
-//     setTodo: setLocalStorageTodo,
-//     onDeleteHandler: onDeleteLocalStorageHandler,
-//     onUpdate: onUpdateLocalStorageHandler,
-//   } = useLocalStorageData();
-
-//   const todos = selectedValue === "Rest API" ? restApiTodos : localStorageTodos;
-//   const setTodos =
-//     selectedValue === "Rest API" ? setRestApiTodos : setLocalStorageTodos;
-//   const setTodo =
-//     selectedValue === "Rest API" ? setRestApiTodo : setLocalStorageTodo;
-//   const onDeleteHandler =
-//     selectedValue === "Rest API"
-//       ? onDeleteRestApiHandler
-//       : onDeleteLocalStorageHandler;
-
-//   const onUpdate =
-//     selectedValue === "Rest API"
-//       ? onUpdateApiHandler
-//       : onUpdateLocalStorageHandler;
-
-//   return {
-//     todos,
-//     setTodos,
-//     setTodo,
-//     onDeleteHandler,
-//     onUpdate,
-//   };
-// };
 export const useData = (selectedValue: string) => {
   const dataProviderApi = useRestApiData();
   const dataProviderLocalStorage = useLocalStorageData();
