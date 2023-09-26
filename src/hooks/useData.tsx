@@ -3,6 +3,7 @@ import useLocalStorage from "../utils/useLocalStorage";
 import { IToDo } from "../containers/todolist";
 import { v4 as uuidv4 } from "uuid";
 import { createTodo, deleteTodo, getTodos, updateTodo } from "../api/api";
+import { Alert } from "antd";
 
 export const useData = (selectedValue: string) => {
   const dataProviderApi = useRestApiData();
@@ -16,6 +17,8 @@ export const useData = (selectedValue: string) => {
     setTodo: dataProvider.setTodo,
     onDeleteHandler: dataProvider.onDeleteHandler,
     onUpdate: dataProvider.onUpdate,
+    total: selectedValue === "Rest API" ? dataProviderApi.total : 0,
+    refetch: selectedValue === "Rest API" ? dataProviderApi.refetch : undefined,
   };
 };
 
@@ -57,10 +60,20 @@ const useLocalStorageData = () => {
 
 const useRestApiData = () => {
   const [todos, setTodos] = useState<IToDo[]>([]);
+  const [total, setTotal] = useState(0);
+
+  const refetch = (page: number, pageSize: number) => {
+    getTodos(page, pageSize).then((data) => {
+      setTodos(data.todos);
+      setTotal(data.totalCount);
+    });
+  };
+
   useEffect(() => {
     getTodos()
       .then((data) => {
-        setTodos(data);
+        setTodos(data.todos);
+        setTotal(data.totalCount);
       })
       .catch((error) => {
         console.log(error);
@@ -115,5 +128,7 @@ const useRestApiData = () => {
     setTodo,
     onDeleteHandler,
     onUpdate,
+    total,
+    refetch,
   };
 };

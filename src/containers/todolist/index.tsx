@@ -11,8 +11,15 @@ export interface IToDo {
 
 const ToDoListComponent = () => {
   const { selectedValue } = useToDoContext();
-  const { todos, setTodos, setTodo, onDeleteHandler, onUpdate } =
-    useData(selectedValue);
+  const {
+    todos,
+    setTodos,
+    setTodo,
+    onDeleteHandler,
+    onUpdate,
+    total,
+    refetch,
+  } = useData(selectedValue);
 
   return (
     <div className="todolist__wrapper">
@@ -22,6 +29,8 @@ const ToDoListComponent = () => {
         setData={setTodos}
         onDeleteHandler={onDeleteHandler}
         onUpdate={onUpdate}
+        total={total}
+        refetchData={refetch}
       />
     </div>
   );

@@ -17,6 +17,8 @@ const ToDoListTable: FC<Props> = ({
   onDeleteHandler,
   setData,
   onUpdate,
+  total,
+  refetchData,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
 
@@ -76,6 +78,10 @@ const ToDoListTable: FC<Props> = ({
             dataSource={handleToDoData(data)}
             pagination={{
               pageSize: 5,
+              total: total,
+              onChange: (page, pageSize) => {
+                if (refetchData) refetchData(page, pageSize);
+              },
             }}
             components={{
               body: {
@@ -94,6 +100,8 @@ type Props = {
   onDeleteHandler: (id: string | string[]) => void;
   setData: (data: IToDo[]) => void;
   onUpdate: (id: string, updatedValue: string) => void;
+  total: number;
+  refetchData?: (page: number, pageSize: number) => void;
 };
 
 export default ToDoListTable;
