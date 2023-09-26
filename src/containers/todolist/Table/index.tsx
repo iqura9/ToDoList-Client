@@ -54,6 +54,7 @@ const ToDoListTable: FC<Props> = ({
         className="todo-list__delete-button"
         size="large"
         disabled={!selectedRowKeys.length}
+        data-testid="submit_button"
         onClick={() => {
           onDeleteHandler(selectedRowKeys);
           setSelectedRowKeys([]);
